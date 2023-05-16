@@ -12,4 +12,5 @@ spec:
       protocol: TCP
   selector:
     app: snyk-juice-shop
+  type: LoadBalancer
     
