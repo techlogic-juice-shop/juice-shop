@@ -1,0 +1,17 @@
+name: "Snyk Notify GH Action"
+
+on:
+  push:
+    branches:
+      # update to master branch
+      - master
+
+jobs:
+  Pipeline-Job:
+    name: 'hello world'
+    runs-on: ubuntu-latest
+
+    steps:
+    # confirm things work
+      name: Testing Action
+      run: echo "Hello world"
