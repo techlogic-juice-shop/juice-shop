@@ -13,5 +13,6 @@ jobs:
 
     steps:
     # confirm things work
-      name: Testing Action
-      run: echo "Hello world"
+      - name: Testing Action
+        run: |
+          echo "Hello world"
