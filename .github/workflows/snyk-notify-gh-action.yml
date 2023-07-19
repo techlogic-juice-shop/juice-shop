@@ -26,15 +26,15 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: 'Set Failed status'
+      - name: 'Set Failure status'
         id: step1
-        if: steps.waitforstatuschecks.outputs.status == 'failed'
-        run: echo "status=failed" >> "$GITHUB_OUTPUT"
+        if: steps.waitforstatuschecks.outputs.status == 'failure'
+        run: echo "status=failure" >> "$GITHUB_OUTPUT"
 
   prReviewer:
     # Add AppSec Reviewer if PR check failed
     needs: prCheck
-    if: needs.prCheck.outputs.output1 == 'failed'
+    if: needs.prCheck.outputs.output1 == 'failure'
     runs-on: ubuntu-latest
 
     steps:
