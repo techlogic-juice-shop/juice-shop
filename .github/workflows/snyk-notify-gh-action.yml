@@ -1,18 +1,46 @@
 name: "Snyk Notify GH Action"
 
 on:
+  pull_request:
   push:
     branches:
-      # update to master branch
+      # Update to master branch
       - master
 
 jobs:
-  Pipeline-Job:
-    name: 'hello world'
+  prCheck:
+  # Confirm PR Check status
+    runs-on: ubuntu-latest
+    outputs: 
+      output1: ${{ steps.step1.outputs.status }}
+
+    steps:
+      # Checks the status of Snyk PR Checks
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: "WyriHaximus/github-action-wait-for-status@v2"
+        with:
+          ignoreActions:  ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: 'Set Failed status'
+        id: step1
+        if: steps.waitforstatuschecks.outputs.status == 'failed'
+        run: echo "status=failed" >> "$GITHUB_OUTPUT"
+
+  prReviewer:
+    # Add AppSec Reviewer if PR check failed
+    needs: prCheck
+    if: needs.prCheck.outputs.output1 == 'failed'
     runs-on: ubuntu-latest
 
     steps:
-    # confirm things work
-      - name: Testing Action
-        run: |
-          echo "Hello world"
+    - name: Add Reviewers
+      uses: madrapps/add-reviewers@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        reviewers: john,kramer,seinfeld
+        re-request-when-approved: true
+        re-request-when-changes-requested: true
