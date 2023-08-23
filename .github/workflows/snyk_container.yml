@@ -23,10 +23,12 @@ jobs:
       run: |
          sudo npm install -g snyk
          snyk auth ${SNYK_TOKEN}
+         
     # Docker Build
     - name: Build Container     
       run: |
          docker build .  -t andrewsouthard1/juiceshop:main
+         
     # Run Snyk Container Test     
     - name: Snyk Container Test
       run: |
