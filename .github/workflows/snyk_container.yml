@@ -28,13 +28,13 @@ jobs:
       run: |
          docker build .  -t andrewsouthard1/juiceshop:main
     # Run Snyk Container Test     
-    - name: Run Snyk Container
+    - name: Snyk Container Test
       run: |
          snyk container test --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high
       continue-on-error: true
       
     # Run Snyk Container Monitor     
-    - name: Run Snyk Container
+    - name: Snyk Container Monitor
       run: |
          snyk container monitor andrewsouthard1/juiceshop:main
       continue-on-error: true
